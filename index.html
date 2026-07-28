@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>kinggamesplay</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: radial-gradient(circle at bottom, #111e36 0%, #040712 100%);
+            color: #fff;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        header {
+            text-align: center;
+            padding: 40px 20px;
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        h1 {
+            margin: 0 0 10px 0;
+            font-size: 2.5rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            background: linear-gradient(45deg, #00dbde, #fc00ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        #searchBar {
+            width: 100%;
+            max-width: 400px;
+            padding: 12px 20px;
+            border-radius: 25px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: rgba(0, 0, 0, 0.5);
+            color: white;
+            font-size: 1rem;
+            outline: none;
+            transition: 0.3s;
+        }
+        #searchBar:focus {
+            border-color: #00dbde;
+            box-shadow: 0 0 10px rgba(0, 219, 222, 0.5);
+        }
+        .container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 25px;
+        }
+        .card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+            text-align: center;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 219, 222, 0.2);
+            border-color: rgba(0, 219, 222, 0.5);
+        }
+        .card img {
+            width: 100%;
+            height: 140px;
+            object-fit: cover;
+            background: #111;
+        }
+        .card-info {
+            padding: 15px;
+        }
+        .card-title {
+            margin: 0 0 5px 0;
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+        .card-tag {
+            font-size: 0.8rem;
+            color: #00dbde;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.95);
+            z-index: 1000;
+        }
+        .modal-content {
+            position: relative;
+            width: 90%;
+            max-width: 1000px;
+            height: 80vh;
+            margin: 5vh auto;
+        }
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            border-radius: 10px;
+            background: #000;
+        }
+        .close-btn {
+            position: absolute;
+            top: -40px;
+            right: 0;
+            color: white;
+            font-size: 30px;
+            cursor: pointer;
+            background: none;
+            border: none;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>kinggamesplay</h1>
+        <input type="text" id="searchBar" placeholder="Search games..." onkeyup="filterGames()">
+    </header>
+
+    <div class="container">
+        <div class="grid" id="gameGrid"></div>
+    </div>
+
+    <div id="gameModal" class="modal">
+        <div class="modal-content">
+            <button class="close-btn" onclick="closeGame()">&times; Close</button>
+            <iframe id="gameFrame" src=""></iframe>
+        </div>
+    </div>
+
+    <script>
+        const games = [
+            { title: "Mine Blocks (2D Minecraft)", tag: "Sandbox", url: "https://minecraft.net", img: "https://unsplash.com" },
+            { title: "Cube Dash", tag: "Rhythm", url: "https://github.io", img: "https://unsplash.com" },
+            { title: "Retro Snake", tag: "Classic", url: "https://github.io", img: "https://unsplash.com" },
+            { title: "Space Interceptor", tag: "Arcade", url: "https://phoboslab.org", img: "https://unsplash.com" },
+            { title: "2048 Fusion", tag: "Puzzle", url: "https://github.io", img: "https://unsplash.com" },
+            { title: "Hextris", tag: "Puzzle", url: "https://hextris.io", img: "https://unsplash.com" }
+        ];
+
+        for (let i = 1; i <= 25; i++) {
+            games.push({
+                title: `Arcade Hit Clone ${i}`,
+                tag: "Community Game",
+                url: "https://biolabdisaster.com",
+                img: "https://unsplash.com"
+            });
+        }
+
+        const gameGrid = document.getElementById('gameGrid');
+
+        function displayGames(gamesList) {
+            gameGrid.innerHTML = "";
+            gamesList.forEach(game => {
+                const card = document.createElement('div');
+                card.className = 'card';
+                card.onclick = () => openGame(game.url);
+                card.innerHTML = `
+                    <img src="${game.img}" alt="${game.title}">
+                    <div class="card-info">
+                        <div class="card-title">${game.title}</div>
+                        <div class="card-tag">${game.tag}</div>
+                    </div>
+                `;
+                gameGrid.appendChild(card);
+            });
+        }
+
+        function filterGames() {
+            const query = document.getElementById('searchBar').value.toLowerCase();
+            const filtered = games.filter(game => game.title.toLowerCase().includes(query));
+            displayGames(filtered);
+        }
+
+        function openGame(url) {
