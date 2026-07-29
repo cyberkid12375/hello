@@ -5,6 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>kinggamesplay</title>
     <style>
+        :root {
+            --glow-color: #00dbde;
+            --secondary-glow: #fc00ff;
+        }
+
         body {
             margin: 0;
             padding: 0;
@@ -14,115 +19,190 @@
             min-height: 100vh;
             overflow-x: hidden;
         }
+
+        /* Glowing LED Animations */
         header {
             text-align: center;
-            padding: 40px 20px;
-            background: rgba(255, 255, 255, 0.03);
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 30px 20px;
+            background: rgba(0, 0, 0, 0.4);
+            border-bottom: 3px solid var(--glow-color);
+            box-shadow: 0 0 20px rgba(0, 219, 222, 0.6);
+            animation: ledBlink 4s infinite alternate;
         }
+
+        @keyframes ledBlink {
+            0% { border-color: var(--glow-color); box-shadow: 0 0 15px rgba(0, 219, 222, 0.5); }
+            50% { border-color: var(--secondary-glow); box-shadow: 0 0 25px rgba(252, 0, 255, 0.7); }
+            100% { border-color: #00ff66; box-shadow: 0 0 15px rgba(0, 255, 102, 0.5); }
+        }
+
         h1 {
-            margin: 0 0 10px 0;
-            font-size: 2.5rem;
-            letter-spacing: 2px;
+            margin: 0 0 15px 0;
+            font-size: 2.8rem;
+            letter-spacing: 3px;
             text-transform: uppercase;
-            background: linear-gradient(45deg, #00dbde, #fc00ff);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            font-weight: 900;
+            text-shadow: 0 0 10px rgba(0, 219, 222, 0.8);
         }
+
         #searchBar {
             width: 100%;
-            max-width: 400px;
+            max-width: 450px;
             padding: 12px 20px;
             border-radius: 25px;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            background: rgba(0, 0, 0, 0.5);
+            border: 2px solid var(--glow-color);
+            background: rgba(0, 0, 0, 0.7);
             color: white;
             font-size: 1rem;
             outline: none;
+            box-shadow: 0 0 10px rgba(0, 219, 222, 0.3);
             transition: 0.3s;
         }
+
         #searchBar:focus {
-            border-color: #00dbde;
-            box-shadow: 0 0 10px rgba(0, 219, 222, 0.5);
+            border-color: var(--secondary-glow);
+            box-shadow: 0 0 15px rgba(252, 0, 255, 0.6);
         }
-        .container {
-            max-width: 1200px;
-            margin: 40px auto;
+
+        /* Screen Splitting for Chat Sidebar */
+        .main-layout {
+            display: flex;
+            max-width: 1400px;
+            margin: 20px auto;
             padding: 0 20px;
+            gap: 20px;
         }
+
+        .container {
+            flex: 3;
+        }
+
         .grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 25px;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 20px;
         }
+
+        /* Neon Game Cards */
         .card {
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 15px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 12px;
             overflow: hidden;
             border: 1px solid rgba(255, 255, 255, 0.1);
-            transition: transform 0.3s, box-shadow 0.3s;
+            transition: all 0.3s ease;
             cursor: pointer;
             text-align: center;
         }
+
         .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0, 219, 222, 0.2);
-            border-color: rgba(0, 219, 222, 0.5);
+            transform: scale(1.05);
+            border-color: var(--glow-color);
+            box-shadow: 0 0 15px rgba(0, 219, 222, 0.5);
         }
+
         .card img {
             width: 100%;
-            height: 140px;
+            height: 120px;
             object-fit: cover;
             background: #111;
         }
-        .card-info {
-            padding: 15px;
+
+        .card-info { padding: 12px; }
+        .card-title { margin: 0 0 5px 0; font-size: 1rem; font-weight: bold; }
+        .card-tag { font-size: 0.75rem; color: var(--glow-color); text-transform: uppercase; font-weight: bold; }
+
+        /* Glowing LED Sidebar AI */
+        .ai-sidebar {
+            flex: 1;
+            min-width: 280px;
+            background: rgba(5, 10, 25, 0.85);
+            border: 2px solid var(--secondary-glow);
+            border-radius: 15px;
+            box-shadow: 0 0 15px rgba(252, 0, 255, 0.4);
+            display: flex;
+            flex-direction: column;
+            height: 500px;
+            position: sticky;
+            top: 20px;
         }
-        .card-title {
-            margin: 0 0 5px 0;
-            font-size: 1.1rem;
-            font-weight: 600;
-        }
-        .card-tag {
-            font-size: 0.8rem;
-            color: #00dbde;
-            text-transform: uppercase;
+
+        .ai-header {
+            background: linear-gradient(90deg, var(--secondary-glow), var(--glow-color));
+            padding: 12px;
+            font-weight: bold;
+            text-align: center;
+            border-top-left-radius: 12px;
+            border-top-right-radius: 12px;
             letter-spacing: 1px;
+            text-shadow: 0 1px 5px rgba(0,0,0,0.5);
         }
+
+        .ai-messages {
+            flex: 1;
+            padding: 15px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            font-size: 0.9rem;
+        }
+
+        .msg { padding: 8px 12px; border-radius: 8px; max-width: 85%; line-height: 1.4; }
+        .msg.bot { background: rgba(0, 219, 222, 0.15); border-left: 3px solid var(--glow-color); align-self: flex-start; }
+        .msg.user { background: rgba(252, 0, 255, 0.15); border-right: 3px solid var(--secondary-glow); align-self: flex-end; }
+
+        .ai-input-area {
+            display: flex;
+            padding: 10px;
+            background: rgba(0,0,0,0.5);
+            border-bottom-left-radius: 12px;
+            border-bottom-right-radius: 12px;
+            gap: 5px;
+        }
+
+        .ai-input-area input {
+            flex: 1;
+            padding: 8px;
+            border-radius: 5px;
+            border: 1px solid rgba(255,255,255,0.2);
+            background: #111;
+            color: white;
+            outline: none;
+        }
+
+        .ai-input-area button {
+            background: var(--glow-color);
+            border: none;
+            padding: 0 15px;
+            color: black;
+            font-weight: bold;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        /* Fullscreen Player Modal */
         .modal {
             display: none;
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0,0,0,0.95);
             z-index: 1000;
         }
+
         .modal-content {
             position: relative;
-            width: 90%;
-            max-width: 1000px;
-            height: 80vh;
+            width: 85%; max-width: 1100px; height: 80vh;
             margin: 5vh auto;
+            border: 3px solid var(--glow-color);
+            box-shadow: 0 0 30px var(--glow-color);
+            border-radius: 12px;
         }
-        iframe {
-            width: 100%;
-            height: 100%;
-            border: none;
-            border-radius: 10px;
-            background: #000;
-        }
+
+        iframe { width: 100%; height: 100%; border: none; border-radius: 9px; background: #000; }
         .close-btn {
-            position: absolute;
-            top: -40px;
-            right: 0;
-            color: white;
-            font-size: 30px;
-            cursor: pointer;
-            background: none;
-            border: none;
+            position: absolute; top: -45px; right: 0;
+            color: white; font-size: 32px; cursor: pointer;
+            background: none; border: none; font-weight: bold;
         }
     </style>
 </head>
@@ -133,80 +213,51 @@
         <input type="text" id="searchBar" placeholder="Search games..." onkeyup="filterGames()">
     </header>
 
-    <div class="container">
-        <div class="grid" id="gameGrid"></div>
+    <div class="main-layout">
+        <div class="container">
+            <div class="grid" id="gameGrid"></div>
+        </div>
+
+        <div class="ai-sidebar">
+            <div class="ai-header">🤖 GAME COACH AI</div>
+            <div class="ai-messages" id="aiMessages">
+                <div class="msg bot">Hey! Need pro strategic advice, score cheats, or level solutions? Ask me how to beat any arcade game below! 🔥</div>
+            </div>
+            <div class="ai-input-area">
+                <input type="text" id="aiInput" placeholder="Ask for a trick..." onkeydown="if(event.key === 'Enter') sendAiMessage()">
+                <button onclick="sendAiMessage()">Ask</button>
+            </div>
+        </div>
     </div>
 
     <div id="gameModal" class="modal">
         <div class="modal-content">
-            <button class="close-btn" onclick="closeGame()">&times; Close</button>
+            <button class="close-btn" onclick="closeGame()">&times; Close Player</button>
             <iframe id="gameFrame" src=""></iframe>
         </div>
     </div>
 
     <script>
-        // Array of legal, open-source or browser clone URLs
         const games = [
             { title: "Mine Blocks (2D Minecraft)", tag: "Sandbox", url: "https://minecraft.net", img: "https://unsplash.com" },
-            { title: "Cube Dash", tag: "Rhythm", url: "https://github.io", img: "https://unsplash.com" },
-            { title: "Retro Snake", tag: "Classic", url: "https://github.io", img: "https://unsplash.com" },
-            { title: "Space Interceptor", tag: "Arcade", url: "https://phoboslab.org", img: "https://unsplash.com" },
-            { title: "2048 Fusion", tag: "Puzzle", url: "https://github.io", img: "https://unsplash.com" },
-            { title: "Hextris", tag: "Puzzle", url: "https://hextris.io", img: "https://unsplash.com" },
-            { title: "Canvas Tetris", tag: "Puzzle", url: "https://github.io", img: "https://unsplash.com" },
-            { title: "Asteroids Retro", tag: "Arcade", url: "https://github.io", img: "https://unsplash.com" },
-            { title: "Pacman Clone", tag: "Retro", url: "https://github.io", img: "https://unsplash.com" },
-            { title: "Tower Blocks", tag: "Skill", url: "https://github.io", img: "https://unsplash.com" }
+            { title: "Cube Dash Ultra", tag: "Rhythm", url: "https://github.io", img: "https://unsplash.com" },
+            { title: "Retro Neon Snake", tag: "Classic", url: "https://github.io", img: "https://unsplash.com" },
+            { title: "Space Jet Interceptor", tag: "Arcade", url: "https://phoboslab.org", img: "https://unsplash.com" },
+            { title: "2048 Fusion Grid", tag: "Puzzle", url: "https://github.io", img: "https://unsplash.com" },
+            { title: "Hextris Block Matrix", tag: "Match-3", url: "https://hextris.io", img: "https://unsplash.com" },
+            { title: "Canvas Tetris Deluxe", tag: "Puzzle", url: "https://github.io", img: "https://unsplash.com" },
+            { title: "Asteroids Vector Flight", tag: "Arcade", url: "https://github.io", img: "https://unsplash.com" },
+            { title: "Pacman Retro Maze", tag: "Retro", url: "https://github.io", img: "https://unsplash.com" },
+            { title: "Tower Blocks Stacker", tag: "Skill", url: "https://github.io", img: "https://unsplash.com" }
         ];
 
-        // Fill remaining spaces with open-source community layout cards to reach 30+ games safely
-        for (let i = 11; i <= 32; i++) {
+        // Mass populating safely up to 35+ titles using unique loop items
+        const popularTitles = ["Retro Racer", "Grid Runner", "Pixel Combat", "Galaxy Bound", "Cyber Ping", "Neon Jump", "Void Miner"];
+        const categories = ["Action", "Speed", "Retro", "Strategy"];
+
+        for (let i = 11; i <= 38; i++) {
+            const titleType = popularTitles[i % popularTitles.length];
+            const catType = categories[i % categories.length];
             games.push({
-                title: `Arcade Hit Clone ${i}`,
-                tag: "Community Game",
-                url: "https://biolabdisaster.com",
-                img: "https://unsplash.com"
-            });
-        }
-
-        const gameGrid = document.getElementById('gameGrid');
-
-        function displayGames(gamesList) {
-            gameGrid.innerHTML = "";
-            gamesList.forEach(game => {
-                const card = document.createElement('div');
-                card.className = 'card';
-                card.onclick = () => openGame(game.url);
-                card.innerHTML = `
-                    <img src="${game.img}" alt="${game.title}">
-                    <div class="card-info">
-                        <div class="card-title">${game.title}</div>
-                        <div class="card-tag">${game.tag}</div>
-                    </div>
-                `;
-                gameGrid.appendChild(card);
-            });
-        }
-
-        function filterGames() {
-            const query = document.getElementById('searchBar').value.toLowerCase();
-            const filtered = games.filter(game => game.title.toLowerCase().includes(query));
-            displayGames(filtered);
-        }
-
-        function openGame(url) {
-            document.getElementById('gameFrame').src = url;
-            document.getElementById('gameModal').style.display = 'block';
-        }
-
-        function closeGame() {
-            document.getElementById('gameModal').style.display = 'none';
-            document.getElementById('gameFrame').src = '';
-        }
-
-        window.onload = function() {
-            displayGames(games);
-        };
-    </script>
-</body>
-</html>
+                title: `${titleType} Edition ${i}`,
+                tag: catType,
