@@ -20,7 +20,6 @@
             overflow-x: hidden;
         }
 
-        /* Glowing LED Animations */
         header {
             text-align: center;
             padding: 30px 20px;
@@ -59,12 +58,6 @@
             transition: 0.3s;
         }
 
-        #searchBar:focus {
-            border-color: var(--secondary-glow);
-            box-shadow: 0 0 15px rgba(252, 0, 255, 0.6);
-        }
-
-        /* Screen Splitting for Chat Sidebar */
         .main-layout {
             display: flex;
             max-width: 1400px;
@@ -73,17 +66,9 @@
             gap: 20px;
         }
 
-        .container {
-            flex: 3;
-        }
+        .container { flex: 3; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 20px; }
 
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-            gap: 20px;
-        }
-
-        /* Neon Game Cards */
         .card {
             background: rgba(255, 255, 255, 0.03);
             border-radius: 12px;
@@ -100,18 +85,11 @@
             box-shadow: 0 0 15px rgba(0, 219, 222, 0.5);
         }
 
-        .card img {
-            width: 100%;
-            height: 120px;
-            object-fit: cover;
-            background: #111;
-        }
-
+        .card img { width: 100%; height: 120px; object-fit: cover; background: #222; }
         .card-info { padding: 12px; }
         .card-title { margin: 0 0 5px 0; font-size: 1rem; font-weight: bold; }
         .card-tag { font-size: 0.75rem; color: var(--glow-color); text-transform: uppercase; font-weight: bold; }
 
-        /* Glowing LED Sidebar AI */
         .ai-sidebar {
             flex: 1;
             min-width: 280px;
@@ -128,82 +106,23 @@
 
         .ai-header {
             background: linear-gradient(90deg, var(--secondary-glow), var(--glow-color));
-            padding: 12px;
-            font-weight: bold;
-            text-align: center;
-            border-top-left-radius: 12px;
-            border-top-right-radius: 12px;
-            letter-spacing: 1px;
-            text-shadow: 0 1px 5px rgba(0,0,0,0.5);
+            padding: 12px; font-weight: bold; text-align: center;
+            border-top-left-radius: 12px; border-top-right-radius: 12px;
         }
 
-        .ai-messages {
-            flex: 1;
-            padding: 15px;
-            overflow-y: auto;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            font-size: 0.9rem;
-        }
-
-        .msg { padding: 8px 12px; border-radius: 8px; max-width: 85%; line-height: 1.4; }
+        .ai-messages { flex: 1; padding: 15px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; font-size: 0.9rem; }
+        .msg { padding: 8px 12px; border-radius: 8px; max-width: 85%; }
         .msg.bot { background: rgba(0, 219, 222, 0.15); border-left: 3px solid var(--glow-color); align-self: flex-start; }
         .msg.user { background: rgba(252, 0, 255, 0.15); border-right: 3px solid var(--secondary-glow); align-self: flex-end; }
 
-        .ai-input-area {
-            display: flex;
-            padding: 10px;
-            background: rgba(0,0,0,0.5);
-            border-bottom-left-radius: 12px;
-            border-bottom-right-radius: 12px;
-            gap: 5px;
-        }
+        .ai-input-area { display: flex; padding: 10px; background: rgba(0,0,0,0.5); gap: 5px; border-bottom-left-radius: 12px; border-bottom-right-radius: 12px; }
+        .ai-input-area input { flex: 1; padding: 8px; border-radius: 5px; border: 1px solid rgba(255,255,255,0.2); background: #111; color: white; outline: none; }
+        .ai-input-area button { background: var(--glow-color); border: none; padding: 0 15px; font-weight: bold; border-radius: 5px; cursor: pointer; }
 
-        .ai-input-area input {
-            flex: 1;
-            padding: 8px;
-            border-radius: 5px;
-            border: 1px solid rgba(255,255,255,0.2);
-            background: #111;
-            color: white;
-            outline: none;
-        }
-
-        .ai-input-area button {
-            background: var(--glow-color);
-            border: none;
-            padding: 0 15px;
-            color: black;
-            font-weight: bold;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-        /* Fullscreen Player Modal */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.95);
-            z-index: 1000;
-        }
-
-        .modal-content {
-            position: relative;
-            width: 85%; max-width: 1100px; height: 80vh;
-            margin: 5vh auto;
-            border: 3px solid var(--glow-color);
-            box-shadow: 0 0 30px var(--glow-color);
-            border-radius: 12px;
-        }
-
-        iframe { width: 100%; height: 100%; border: none; border-radius: 9px; background: #000; }
-        .close-btn {
-            position: absolute; top: -45px; right: 0;
-            color: white; font-size: 32px; cursor: pointer;
-            background: none; border: none; font-weight: bold;
-        }
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 1000; }
+        .modal-content { position: relative; width: 85%; max-width: 1100px; height: 80vh; margin: 5vh auto; border: 3px solid var(--glow-color); border-radius: 12px; }
+        iframe { width: 100%; height: 100%; border: none; background: #000; }
+        .close-btn { position: absolute; top: -45px; right: 0; color: white; font-size: 32px; cursor: pointer; background: none; border: none; font-weight: bold; }
     </style>
 </head>
 <body>
@@ -238,7 +157,6 @@
     </div>
 
     <script>
-        // Restored valid endpoints to avoid connection refusal blocks
         const games = [
             { title: "Mine Blocks (2D Minecraft)", tag: "Sandbox", url: "https://minecraft.net", img: "https://unsplash.com" },
             { title: "Cube Dash Ultra", tag: "Rhythm", url: "https://github.io", img: "https://unsplash.com" },
@@ -256,3 +174,41 @@
         const categories = ["Action", "Speed", "Retro", "Strategy"];
 
         for (let i = 11; i <= 38; i++) {
+            const titleType = popularTitles[i % popularTitles.length];
+            const catType = categories[i % categories.length];
+            games.push({
+                title: `${titleType} Edition ${i}`,
+                tag: catType,
+                url: "https://biolabdisaster.com",
+                img: "https://unsplash.com"
+            });
+        }
+
+        const gameGrid = document.getElementById('gameGrid');
+        const aiMessages = document.getElementById('aiMessages');
+
+        function displayGames(gamesList) {
+            gameGrid.innerHTML = "";
+            gamesList.forEach(game => {
+                const card = document.createElement('div');
+                card.className = 'card';
+                card.onclick = () => openGame(game.url);
+                card.innerHTML = `
+                    <img src="${game.img}" alt="${game.title}">
+                    <div class="card-info">
+                        <div class="card-title">${game.title}</div>
+                        <div class="card-tag">${game.tag}</div>
+                    </div>
+                `;
+                gameGrid.appendChild(card);
+            });
+        }
+
+        function filterGames() {
+            const query = document.getElementById('searchBar').value.toLowerCase();
+            const filtered = games.filter(game => game.title.toLowerCase().includes(query));
+            displayGames(filtered);
+        }
+
+        function openGame(url) {
+            document.getElementById('gameFrame').src = url;
