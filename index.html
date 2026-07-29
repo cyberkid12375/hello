@@ -238,6 +238,7 @@
     </div>
 
     <script>
+        // Restored valid endpoints to avoid connection refusal blocks
         const games = [
             { title: "Mine Blocks (2D Minecraft)", tag: "Sandbox", url: "https://minecraft.net", img: "https://unsplash.com" },
             { title: "Cube Dash Ultra", tag: "Rhythm", url: "https://github.io", img: "https://unsplash.com" },
@@ -251,13 +252,7 @@
             { title: "Tower Blocks Stacker", tag: "Skill", url: "https://github.io", img: "https://unsplash.com" }
         ];
 
-        // Mass populating safely up to 35+ titles using unique loop items
         const popularTitles = ["Retro Racer", "Grid Runner", "Pixel Combat", "Galaxy Bound", "Cyber Ping", "Neon Jump", "Void Miner"];
         const categories = ["Action", "Speed", "Retro", "Strategy"];
 
         for (let i = 11; i <= 38; i++) {
-            const titleType = popularTitles[i % popularTitles.length];
-            const catType = categories[i % categories.length];
-            games.push({
-                title: `${titleType} Edition ${i}`,
-                tag: catType,
