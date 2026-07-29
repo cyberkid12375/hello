@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>kinggamesplay</title>
+    <style>
+        :root { --glow: #00dbde; --glow2: #fc00ff; }
+        body { margin: 0; padding: 0; font-family: sans-serif; background: radial-gradient(circle at bottom, #111e36 0%, #040712 100%); color: #fff; min-height: 100vh; overflow-x: hidden; }
+        header { text-align: center; padding: 20px; background: rgba(0, 0, 0, 0.4); border-bottom: 3px solid var(--glow); box-shadow: 0 0 20px rgba(0, 219, 222, 0.6); animation: ledBlink 4s infinite alternate; }
+        @keyframes ledBlink { 0% { border-color: var(--glow); box-shadow: 0 0 15px rgba(0, 219, 222, 0.5); } 50% { border-color: var(--glow2); box-shadow: 0 0 25px rgba(252, 0, 255, 0.7); } 100% { border-color: #00ff66; box-shadow: 0 0 15px rgba(0, 255, 102, 0.5); } }
+        h1 { margin: 0 0 10px 0; font-size: 2.5rem; text-transform: uppercase; text-shadow: 0 0 10px rgba(0, 219, 222, 0.8); }
+        #searchBar { width: 100%; max-width: 400px; padding: 10px 20px; border-radius: 25px; border: 2px solid var(--glow); background: rgba(0, 0, 0, 0.7); color: white; outline: none; }
+        .main-layout { display: flex; max-width: 1400px; margin: 20px auto; padding: 0 20px; gap: 20px; }
+        .container { flex: 3; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 15px; }
+        .card { background: rgba(255, 255, 255, 0.03); border-radius: 12px; overflow: hidden; border: 1px solid rgba(255, 255, 255, 0.1); transition: 0.3s; cursor: pointer; text-align: center; }
+        .card:hover { transform: scale(1.05); border-color: var(--glow); box-shadow: 0 0 15px rgba(0, 219, 222, 0.5); }
+        .card img { width: 100%; height: 110px; object-fit: cover; background: #222; }
+        .card-info { padding: 10px; }
+        .card-title { margin: 0 0 5px 0; font-size: 0.95rem; font-weight: bold; }
+        .card-tag { font-size: 0.7rem; color: var(--glow); text-transform: uppercase; font-weight: bold; }
+        .ai-sidebar { flex: 1; min-width: 260px; background: rgba(5, 10, 25, 0.85); border: 2px solid var(--glow2); border-radius: 15px; box-shadow: 0 0 15px rgba(252, 0, 255, 0.4); display: flex; flex-direction: column; height: 480px; position: sticky; top: 20px; }
+        .ai-header { background: linear-gradient(90deg, var(--glow2), var(--glow)); padding: 10px; font-weight: bold; text-align: center; border-top-left-radius: 12px; border-top-right-radius: 12px; }
+        .ai-messages { flex: 1; padding: 12px; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; font-size: 0.85rem; }
+        .msg { padding: 6px 10px; border-radius: 8px; max-width: 85%; }
+        .msg.bot { background: rgba(0, 219, 222, 0.15); border-left: 3px solid var(--glow); align-self: flex-start; }
+        .msg.user { background: rgba(252, 0, 255, 0.15); border-right: 3px solid var(--glow2); align-self: flex-end; }
+        .ai-input-area { display: flex; padding: 8px; background: rgba(0,0,0,0.5); gap: 5px; border-bottom-left-radius: 12px; border-bottom-right-radius: 12px; }
+        .ai-input-area input { flex: 1; padding: 6px; border-radius: 5px; border: 1px solid rgba(255,255,255,0.2); background: #111; color: white; outline: none; }
+        .ai-input-area button { background: var(--glow); border: none; padding: 0 12px; font-weight: bold; border-radius: 5px; cursor: pointer; }
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 1000; }
+        .modal-content { position: relative; width: 85%; max-width: 1100px; height: 80vh; margin: 5vh auto; border: 3px solid var(--glow); border-radius: 12px; }
+        iframe { width: 100%; height: 100%; border: none; background: #000; }
+        .close-btn { position: absolute; top: -40px; right: 0; color: white; font-size: 30px; cursor: pointer; background: none; border: none; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>kinggamesplay</h1>
+        <input type="text" id="searchBar" placeholder="Search games..." onkeyup="filterGames()">
+    </header>
+    <div class="main-layout">
+        <div class="container"><div class="grid" id="gameGrid"></div></div>
+        <div class="ai-sidebar">
+            <div class="ai-header">🤖 GAME COACH AI</div>
+            <div class="ai-messages" id="aiMessages">
+                <div class="msg bot">Hey! Need pro strategic advice, score cheats, or level solutions? Ask me how to beat any arcade game below! 🔥</div>
+            </div>
+            <div class="ai-input-area">
+                <input type="text" id="aiInput" placeholder="Ask for a trick..." onkeydown="if(event.key === 'Enter') sendAiMessage()">
+                <button onclick="sendAiMessage()">Ask</button>
+            </div>
+        </div>
+    </div>
+    <div id="gameModal" class="modal"><div class="modal-content"><button class="close-btn" onclick="closeGame()">&times; Close</button><iframe id="gameFrame" src=""></iframe></div></div>
+    <script>
+        const games = [
+            { title: "Mine Blocks (2D Minecraft)", tag: "Sandbox", url: "https://minecraft.net", img: "https://unsplash.com" },
+            { title: "Cube Dash Ultra", tag: "Rhythm", url: "https://github.io", img: "https://unsplash.com" },
+            { title: "Retro Neon Snake", tag: "Classic", url: "https://github.io", img: "https://unsplash.com" },
+            { title: "Space Jet Interceptor", tag: "Arcade", url: "https://phoboslab.org", img: "https://unsplash.com" },
+            { title: "2048 Fusion Grid", tag: "Puzzle", url: "https://github.io", img: "https://unsplash.com" },
+            { title: "Hextris Block Matrix", tag: "Match-3", url: "https://hextris.io", img: "https://unsplash.com" },
+            { title: "Canvas Tetris Deluxe", tag: "Puzzle", url: "https://github.io", img: "https://unsplash.com" },
+            { title: "Asteroids Vector Flight", tag: "Arcade", url: "https://github.io", img: "https://unsplash.com" },
+            { title: "Pacman Retro Maze", tag: "Retro", url: "https://github.io", img: "https://unsplash.com" },
+            { title: "Tower Blocks Stacker", tag: "Skill", url: "https://github.io", img: "https://unsplash.com" }
+        ];
+        const popularTitles = ["Retro Racer", "Grid Runner", "Pixel Combat", "Galaxy Bound", "Cyber Ping", "Neon Jump", "Void Miner"];
+        const categories = ["Action", "Speed", "Retro", "Strategy"];
+        for (let i = 11; i <= 38; i++) {
+            games.push({ title: `${popularTitles[i % popularTitles.length]} Edition ${i}`, tag: categories[i % categories.length], url: "https://biolabdisaster.com", img: "https://unsplash.com" });
+        }
+        const gameGrid = document.getElementById('gameGrid'), aiMessages = document.getElementById('aiMessages');
+        function displayGames(gList) {
+            gameGrid.innerHTML = "";
+            gList.forEach(g => {
+                const c = document.createElement('div'); c.className = 'card'; c.onclick = () => openGame(g.url);
+                c.innerHTML = `<img src="${g.img}" alt="${g.title}"><div class="card-info"><div class="card-title">${g.title}</div><div class="card-tag">${g.tag}</div></div>`;
+                gameGrid.appendChild(c);
+            });
+        }
+        function filterGames() { displayGames(games.filter(g => g.title.toLowerCase().includes(document.getElementById('searchBar').value.toLowerCase()))); }
+        function openGame(url) { document.getElementById('gameFrame').src = url; document.getElementById('gameModal').style.display = 'block'; }
+        function closeGame() { document.getElementById('gameModal').style.display = 'none'; document.getElementById('gameFrame').src = ''; }
+        function sendAiMessage() {
+            const input = document.getElementById('aiInput'), txt = input.value.trim(); if (!txt) return;
+            const uDiv = document.createElement('div'); uDiv.className = 'msg user'; uDiv.innerText = txt; aiMessages.appendChild(uDiv); input.value = '';
+            setTimeout(() => {
+                const bDiv = document.createElement('div'); bDiv.className = 'msg bot'; const low = txt.toLowerCase();
+                if (low.includes('minecraft') || low.includes('blocks')) bDiv.innerText = "Mine Blocks Pro-Tip: Never dig the block directly underneath you or you might slip into hidden cave lava pools! Keep ladders equipped.";
+                else if (low.includes('dash') || low.includes('geometry')) bDiv.innerText = "Geometry Dash Ultra Tip: It's pure auditory muscle memory. Track the rhythm clicks precisely to the level soundtrack beat lines instead of staring down objects.";
+                else if (low.includes('snake')) bDiv.innerText = "Neon Snake Strat: Hug the outer header borders tightly! Pack rows in compressed loops to preserve path space without biting your trailing tail line.";
+                else bDiv.innerText = "Understood! For that speed module, focus on tracking corner layout blocks and look out for floating score multipliers.";
+                aiMessages.appendChild(bDiv); aiMessages.scrollTop = aiMessages.scrollHeight;
+            }, 600);
+            aiMessages.scrollTop = aiMessages.scrollHeight;
+        }
+        
