@@ -157,6 +157,7 @@
     </div>
 
     <script>
+        // Clean production URLs to avoid browser network restrictions
         const games = [
             { title: "Mine Blocks (2D Minecraft)", tag: "Sandbox", url: "https://minecraft.net", img: "https://unsplash.com" },
             { title: "Cube Dash Ultra", tag: "Rhythm", url: "https://github.io", img: "https://unsplash.com" },
@@ -209,6 +210,3 @@
             const filtered = games.filter(game => game.title.toLowerCase().includes(query));
             displayGames(filtered);
         }
-
-        function openGame(url) {
-            document.getElementById('gameFrame').src = url;
